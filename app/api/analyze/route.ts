@@ -150,8 +150,9 @@ export async function POST(req: Request) {
     let text = "";
     try {
       const data = JSON.parse(textBody);
-      const parts = data?.candidates?.[0]?.content?.parts || [];
-      text = parts.map((p: any) => (typeof p?.text === "string" ? p.text : "")).join("");
+      type GeminiPart = { text?: string };
+      const parts: GeminiPart[] = data?.candidates?.[0]?.content?.parts ?? [];
+      const text = parts.map((p) => (typeof p.text === "string" ? p.text : "")).join("");
     } catch {
       text = textBody;
     }

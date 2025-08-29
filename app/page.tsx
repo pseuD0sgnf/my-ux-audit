@@ -105,9 +105,13 @@ export default function Home() {
           }
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[analyze] exception:", err);
-      setErrorText(err?.message || String(err));
+      const msg =
+        typeof err === "object" && err !== null && "message" in err
+          ? String((err as { message?: unknown }).message)
+          : String(err);
+      setErrorText(msg);
     } finally {
       setLoading(false);
     }
